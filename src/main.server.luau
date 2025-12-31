@@ -42,15 +42,15 @@ local function start()
 	launchAction.Triggered:Connect(toggleIsPaletteVisibile)
 	launchButton.Click:Connect(toggleIsPaletteVisibile)
 
-	local paletteInputTrove = pluginTrove:Extend()
+	local launcherInputTrove = pluginTrove:Extend()
 	pluginTrove:Add(Charm.subscribe(launcher.isVisible, function(isVisible)
 		launcher.search("")
 		launcher.selectedIndex(0)
 		launchButton:SetActive(isVisible)
-		paletteInputTrove:Clean()
+		launcherInputTrove:Clean()
 
 		if isVisible then
-			paletteInputTrove:Add(UserInputService.InputBegan:Connect(function(input)
+			launcherInputTrove:Add(UserInputService.InputBegan:Connect(function(input)
 				local keycode = input.KeyCode
 
 				if keycode == Enum.KeyCode.Up then
@@ -66,7 +66,7 @@ local function start()
 		end
 	end) :: any)
 
-	local viewportRenderers: { [Command.Command]: Command.CommandContext } = {}
+	local viewportCommands: { [Command.Command]: Command.CommandContext } = {}
 	pluginTrove:Add(launcher.runCommand:Connect(function(cmd: Command.Command)
 		local cmdTrove = pluginTrove:Extend()
 		local ctx: Command.CommandContext = {
@@ -95,12 +95,13 @@ local function start()
 						launcher.commandRenderer = nil
 					end
 				end)
+				launcherInputTrove:Add(cmdTrove)
 				return
 			end
 			if renderInViewport then
-				viewportRenderers[cmd] = ctx
+				viewportCommands[cmd] = ctx
 				cmdTrove:Add(function()
-					viewportRenderers[cmd] = nil
+					viewportCommands[cmd] = nil
 				end)
 			end
 		end
@@ -122,7 +123,7 @@ local function start()
 		end
 
 		for _, cmd in Extension.allCommands() do
-			local ctx = viewportRenderers[cmd]
+			local ctx = viewportCommands[cmd]
 			if ctx then
 				(cmd._metadata.renderInViewport :: any)(ctx)
 			end
