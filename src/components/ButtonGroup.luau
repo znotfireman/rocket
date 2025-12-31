@@ -47,7 +47,7 @@ Iris.Internal.WidgetConstructor(
 				ActiveTransparency = Iris._config.ButtonActiveTransparency,
 			})
 
-			widgets.UIListLayout(ButtonGroup, Enum.FillDirection.Vertical, UDim.new(0, Iris._config.ItemSpacing.Y))
+			widgets.UIListLayout(ButtonGroup, Enum.FillDirection.Horizontal, UDim.new(0, Iris._config.ItemSpacing.X))
 
 			return ButtonGroup
 		end,
@@ -55,17 +55,17 @@ Iris.Internal.WidgetConstructor(
 			local Button = thisWidget.Instance :: TextButton
 			Button.Size = thisWidget.arguments.Size or UDim2.fromOffset(0, 0)
 		end,
-		Discard = function(thisWidget: any)
-			thisWidget.Instance:Destroy()
-		end,
 		ChildAdded = function(thisWidget: any)
 			return thisWidget.Instance
+		end,
+		Discard = function(thisWidget: any)
+			thisWidget.Instance:Destroy()
 		end,
 	} :: any
 )
 
-local function ButtonGroup(size: UDim2)
-	Iris.Internal._Insert("ButtonGroup", { size })
+local function ButtonGroup(size: UDim2?): typeof(Iris.Button({})) & typeof(Iris.Group({}))
+	return Iris.Internal._Insert("ButtonGroup", { size }) :: any
 end
 
 return ButtonGroup

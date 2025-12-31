@@ -5,10 +5,11 @@ end
 local CoreGui = game:GetService("CoreGui")
 
 local Charm = require("@pkgs/Charm")
+local Extension = require("@src/lib/Extension")
 local Iris = require("@pkgs/Iris")
 local Trove = require("@pkgs/Trove")
-local palette = require("@src/atoms/palette")
-local Extension = require("@src/lib/Extension")
+local launcher = require("@src/atoms/launcher")
+local renderLauncher = require("@src/components/renderLauncher")
 
 local pluginTrove = Trove.new()
 pluginTrove:Add(plugin.Unloading:Connect(pluginTrove:WrapClean()))
@@ -35,14 +36,16 @@ local function mountUi()
 	Iris.UpdateGlobalConfig({ RichText = true, FrameBorderSize = 0 })
 	Iris.UpdateGlobalConfig(Iris.TemplateConfig.sizeClear :: any)
 	Iris:Connect(function()
-		Iris.Text({ "gg" })
+		if launcher.isVisible() then
+			renderLauncher()
+		end
 	end)
 
 	pluginTrove:Add(Iris.Shutdown :: any)
 end
 
 local function toggleIsPaletteVisibile()
-	palette.isVisible(not palette.isVisible())
+	launcher.isVisible(not launcher.isVisible())
 end
 
 local function start()
@@ -59,7 +62,7 @@ local function start()
 	launchAction.Triggered:Connect(toggleIsPaletteVisibile)
 	launchButton.Click:Connect(toggleIsPaletteVisibile)
 
-	pluginTrove:Add(Charm.subscribe(palette.isVisible, function(isVisible)
+	pluginTrove:Add(Charm.subscribe(launcher.isVisible, function(isVisible)
 		launchButton:SetActive(isVisible)
 	end) :: any)
 
