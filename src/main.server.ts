@@ -2,7 +2,7 @@ assert(plugin, `Rocket must be ran as a plugin`);
 
 import { atom, computed, subscribe } from "@rbxts/charm";
 import Iris from "@rbxts/iris";
-import { CoreGui } from "@rbxts/services";
+import { ChangeHistoryService, CoreGui } from "@rbxts/services";
 import { Trove } from "@rbxts/trove";
 import { Palette, PaletteProps } from "./components/palette";
 import { RocketCommand, RocketExtension, RocketApplication } from "./framework";
@@ -44,8 +44,12 @@ function collectModules(modules: Instance[]) {
 				continue;
 			}
 
-			const extDefault = typeIs(ext, "table") && "default" in ext ? ext.default : ext;
-			if (typeIs(extDefault, "table")) collectExtension(extDefault as typeof RocketExtension);
+			if (typeIs(ext, "table")) {
+				collectExtension(ext as typeof RocketExtension);
+				for (const [_, value] of pairs(ext)) {
+					if (typeIs(value, "table")) collectExtension(value as typeof RocketExtension);
+				}
+			}
 		}
 	}
 }
@@ -79,13 +83,17 @@ function mountUi() {
 		return extenstionHaystack;
 	});
 
-	const launchAction = plugin.CreatePluginAction(
-		"rocket.launch",
-		"Launch Rocket",
-		"Launch the Rocket command palette",
-		"",
-		true,
-	);
+	function run(ext: typeof RocketExtension) {
+		isPaletteVisible(false);
+
+		const cmdCtor = ext as typeof RocketCommand;
+		if (commands.has(cmdCtor)) {
+			const cmdTrove = pluginTrove.extend();
+			const cmd = new cmdCtor(plugin, cmdTrove);
+			cmd.run();
+			cmdTrove.destroy();
+		}
+	}
 
 	const paletteProps: PaletteProps = {
 		commands,
@@ -101,22 +109,27 @@ function mountUi() {
 		search,
 		searchResults,
 
-		run: (ext: typeof RocketExtension) => {
-			isPaletteVisible(false);
-		},
+		run,
 	};
 
-	let paletteInputTrove = pluginTrove.extend();
+	const launchAction = plugin.CreatePluginAction(
+		"rocket.launch",
+		"Launch Rocket",
+		"Launch the Rocket command palette",
+		"",
+		true,
+	);
+
 	pluginTrove.add(launchAction.Triggered.Connect(() => isPaletteVisible(!isPaletteVisible())));
+
+	let paletteInputTrove = pluginTrove.extend();
 	pluginTrove.add(
 		subscribe(isPaletteVisible, () => {
-			paletteInputTrove.clean();
-
+			search("");
 			selectedIndex(0);
+			paletteInputTrove.clean();
 			paletteInputTrove.add(
-				UserInputService.InputBegan.Connect((input, isGameProccessed) => {
-					if (isGameProccessed) return;
-
+				UserInputService.InputBegan.Connect((input) => {
 					const keycode = input.KeyCode;
 					switch (keycode) {
 						case Enum.KeyCode.Up:
