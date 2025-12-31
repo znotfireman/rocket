@@ -6,36 +6,76 @@
 	"project_name": "Rocket",
 	"languages": {
 		"Luau": {
-			"formatter": { "external": { "command": "stylua", "arguments": ["-"] } }
-		},
-		"JavaScript": {
 			"formatter": {
-				"external": {
-					"command": "bunx",
-					"arguments": ["prettier", "--stdin-filepath", "{buffer_path}"]
-				}
-			},
-			"code_actions_on_format": {
-				"source.fixAll.eslint": true
-			}
-		},
-		"TypeScript": {
-			"formatter": {
-				"external": {
-					"command": "bunx",
-					"arguments": ["prettier", "--stdin-filepath", "{buffer_path}"]
-				}
-			},
-			"code_actions_on_format": {
-				"source.fixAll.eslint": true
+				"external": { "command": "stylua", "arguments": ["-"] }
 			}
 		}
 	},
+	"file_types": {
+		"JSONC": [".luaurc"]
+	},
+	"file_scan_exclusions": [
+		// zed
+		"**/.git",
+		"**/.svn",
+		"**/.hg",
+		"**/.jj",
+		"**/CVS",
+		"**/.DS_Store",
+		"**/Thumbs.db",
+		"**/.classpath",
+		"**/.settings",
+		// rocket
+		"luau_packages",
+		"lune_packages",
+		// "roblox_packages",
+		"**/.pesde",
+		"pesde.lock",
+		// "sourcemap.json",
+		"out"
+	],
 	"lsp": {
+		"json-language-server": {
+			"settings": {
+				"json": {
+					"schemas": [
+						{
+							"fileMatch": [".luaurc"],
+							"url": "https://raw.githubusercontent.com/JohnnyMorganz/luau-lsp/refs/heads/main/editors/code/schemas/luaurc.json"
+						},
+						{
+							"fileMatch": ["*.project.json"],
+							"url": "https://raw.githubusercontent.com/rojo-rbx/vscode-rojo/refs/heads/master/schemas/project.template.schema.json"
+						}
+					]
+				}
+			}
+		},
 		"luau-lsp": {
 			"settings": {
-				"ext": {
-					"roblox": { "enabled": true, "security_level": "plugin" }
+				"luau-lsp": {
+					"completion": {
+						"enabled": true,
+						"autocompleteEnd": true,
+						"imports": {
+							"enabled": true,
+							"suggestServices": true,
+							"suggestRequires": true,
+							"requireStyle": "AlwaysAbsolute",
+							"stringRequires": {
+								"enabled": true
+							},
+							"separateGroupsWithLine": true,
+							"ignoreGlobs": ["**/.pesde/**", "**/out/**"]
+						}
+					}
+				},
+				"roblox": {
+					"enabled": true,
+					"security_level": "plugin"
+				},
+				"fflags": {
+					"enable_new_solver": true
 				}
 			}
 		}

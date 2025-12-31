@@ -1,0 +1,11 @@
+{
+	"languageMode": "strict",
+	"lint": {
+		"*": true
+	},
+	"aliases": {
+		"lune": "~/.lune/.typedefs/0.10.4/",
+		"pkgs": "roblox_packages",
+		"src": "src"
+	}
+}

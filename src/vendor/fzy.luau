@@ -216,7 +216,7 @@ end
 --     in `haystacks`, each entry giving the index of the line in `haystacks`
 --     as well as the equivalent to the return value of `positions` for that
 --     line.
-function fzy.filter(needle, haystacks, case_sensitive)
+function fzy.filter(needle: string, haystacks: { string }, case_sensitive: boolean?): { { number } }
 	local result = {}
 
 	for i, line in ipairs(haystacks) do

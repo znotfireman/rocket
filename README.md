@@ -1,3 +1,3 @@
 # Rocket
 
-Rocket is a general-purpose Roblox building plugin.
+Rocket is a general-purpose Roblox command launcher inspired by Raycast.
