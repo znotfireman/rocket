@@ -10,11 +10,11 @@ local Charm = require("@pkgs/Charm")
 local Command = require("@src/lib/Command")
 local Extension = require("@src/lib/Extension")
 local Iris = require("@pkgs/Iris")
+local LauncherWindow = require("@src/components/launcher/LauncherWindow")
+local SettingsWindow = require("@src/components/settings/SettingsWindow")
 local Trove = require("@pkgs/Trove")
 local assets = require("./assets")
 local launcher = require("@src/atoms/launcher")
-local renderLauncher = require("@src/components/renderLauncher")
-local renderSettings = require("@src/components/renderSettings")
 local settings = require("@src/atoms/settings")
 
 local pluginTrove = Trove.new()
@@ -64,8 +64,9 @@ local function start()
 
 	local launcherInputTrove = pluginTrove:Extend()
 	pluginTrove:Add(Charm.subscribe(launcher.isVisible, function(isVisible)
+		launcher.isFocused(false)
 		launcher.search("")
-		launcher.selectedIndex(0)
+		launcher.selectedIndex(1)
 		launchButton:SetActive(isVisible)
 		launcherInputTrove:Clean()
 
@@ -183,11 +184,11 @@ local function start()
 	})
 	Iris:Connect(function()
 		if launcher.isVisible() then
-			renderLauncher()
+			LauncherWindow()
 		end
 
 		if settings.isVisible() then
-			renderSettings()
+			SettingsWindow()
 		end
 
 		for _, cmd in Extension.allCommands() do

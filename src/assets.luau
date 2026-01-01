@@ -11,6 +11,13 @@ local assets = {
 		rocket = "rbxasset://.asphalt-rocket/a42029fdac6bf6b18f4404b6cd1b401fd39dce7d07ed831b63b136491a979670.png",
 		selection = "rbxasset://.asphalt-rocket/46220e13cdd44ba107f2da887168972d63cc27d5c3997ec8f91e8c93c111d7f1.png",
 	},
+	icons = {
+		caretdown = "rbxasset://.asphalt-rocket/80e1a50fa250ad0f0f3d38d4beb2443e2c5529aac49df20cde4dea255a1c3a16.png",
+		caretright = "rbxasset://.asphalt-rocket/58d1bd0bc04f04b35af6613858cdc6bd0dcd97cf2dc0c67dadfebceb136a66b2.png",
+		extension = "rbxasset://.asphalt-rocket/0e85b986f398ac987c5e90e62fc9d2bfce01e669fb72b5898352400c91ec7c7a.png",
+		rocket = "rbxasset://.asphalt-rocket/4ed89e328f47940845cae04ad2ade4563b8775c74191c564d0cffc6c547043c3.png",
+		x = "rbxasset://.asphalt-rocket/1b7c638f2f26e2a74829d5a934d05d1acb7a2df68ba024fc214a0df09a94f9a5.png",
+	},
 }
 
 return assets

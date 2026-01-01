@@ -28,6 +28,17 @@ Extension.commandTitles = Charm.computed(function(): { string }
 	return result
 end)
 
+Extension.sortedByTitle = Charm.computed(function(): { Extension }
+	local result = {}
+	for extension in Extension.allExtensions() do
+		table.insert(result, extension)
+	end
+	table.sort(result, function(lhs: Extension, rhs: Extension): boolean
+		return lhs._metadata.title < rhs._metadata.title
+	end)
+	return result
+end)
+
 Extension.extensionsById = Charm.computed(function(): { [string]: Extension }
 	local result = {}
 	for extension in Extension.allExtensions() do

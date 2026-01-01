@@ -1,9 +1,8 @@
-local Workspace = game:GetService("Workspace")
-
-local ButtonGroup = require("./ButtonGroup")
+local ButtonGroup = require("@src/components/foundations/ButtonGroup")
 local Icon = require("@src/lib/Icon")
 local Iris = require("@pkgs/Iris")
 local launcher = require("@src/atoms/launcher")
+local useViewportSize = require("@src/utils/useViewportSize")
 
 local COMMAND_HIGHLIGHTED_CONFIG = {
 	ButtonTransparency = 0.5,
@@ -30,21 +29,17 @@ local WINDOW_ARGS = {
 	true, -- NoMenu
 }
 
-local function useViewportSize(): Vector2
-	local camera = Workspace:FindFirstChildOfClass("Camera")
-	if camera then
-		return camera.ViewportSize
-	end
-	return Vector2.zero
-end
-
-local function renderLauncher()
+local function LauncherWindow()
 	local viewportSize = useViewportSize()
 	local windowSize = viewportSize / 2
-	Iris.PushConfig({ WindowPadding = Vector2.zero, ItemSpacing = Vector2.zero, ContentWidth = UDim.new(1, 0) })
+	Iris.PushConfig({
+		WindowPadding = Vector2.zero,
+		ItemSpacing = Vector2.zero,
+		ContentWidth = UDim.new(1, 0),
+	})
 	Iris.Window(WINDOW_ARGS, { position = windowSize / 2, size = windowSize } :: any)
 
-	Iris.PushConfig({ FrameRounding = 0 })
+	Iris.PushConfig({ FrameRounding = 0, FramePadding = Iris._config.FramePadding * 2 })
 	local commandToRender, commandContext = launcher.commandToRender, launcher.commandContext
 	if commandToRender and commandContext then
 		local render, renderNav =
@@ -78,8 +73,7 @@ local function renderLauncher()
 		launcher.search(inputField and inputField.Text or "")
 		if not launcher.isFocused() and inputField then
 			launcher.isFocused(true)
-			-- this bricks your mouse??? how???
-			-- inputField:CaptureFocus()
+			inputField:CaptureFocus()
 		end
 
 		local extensionContainer = Iris.Table({ 1 })
@@ -117,4 +111,4 @@ local function renderLauncher()
 	Iris.PopConfig()
 end
 
-return renderLauncher
+return LauncherWindow

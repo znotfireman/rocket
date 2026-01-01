@@ -36,7 +36,8 @@ Iris.Internal.WidgetConstructor(
 			ButtonGroup.AutoButtonColor = false
 			ButtonGroup.Text = ""
 
-			widgets.UIListLayout(ButtonGroup, Enum.FillDirection.Horizontal, UDim.new(0, Iris._config.ItemSpacing.X))
+			widgets.UIListLayout(ButtonGroup, Enum.FillDirection.Horizontal, UDim.new(0, Iris._config.ItemSpacing.X)).VerticalAlignment =
+				Enum.VerticalAlignment.Center
 
 			widgets.applyFrameStyle(ButtonGroup)
 
