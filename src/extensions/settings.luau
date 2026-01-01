@@ -5,7 +5,7 @@ local ext = Extension.new(plugin, {
 	id = "rocket-settings",
 	title = "Rocket Settings",
 	description = "Manage your Rocket Settings",
-	icon = "",
+	icon = { Image = "" },
 	authors = { "Team Fireworks" },
 })
 

@@ -1,5 +1,6 @@
 local Charm = require("@pkgs/Charm")
 local Command = require("./Command")
+local Icon = require("./Icon")
 local plugin = script:FindFirstAncestorWhichIsA("Plugin")
 
 export type CommandContext = Command.CommandContext
@@ -39,7 +40,7 @@ export type ExtensionMetadata = {
 	id: string,
 	title: string,
 	description: string,
-	icon: string,
+	icon: Icon.Icon,
 	authors: { string },
 }
 

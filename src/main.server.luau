@@ -11,6 +11,7 @@ local Command = require("@src/lib/Command")
 local Extension = require("@src/lib/Extension")
 local Iris = require("@pkgs/Iris")
 local Trove = require("@pkgs/Trove")
+local assets = require("./assets")
 local launcher = require("@src/atoms/launcher")
 local renderLauncher = require("@src/components/renderLauncher")
 
@@ -39,8 +40,13 @@ local function start()
 	)
 
 	local toolbar = plugin:CreateToolbar("Rocket")
-	local launchButton = toolbar:CreateButton("@rocket/launch", "Launches the Rocket command palette", "", "Launch")
-	local _settingsButton = toolbar:CreateButton("@rocket/settings", "Configure Rocket", "", "Settings")
+	local launchButton = (
+		toolbar:CreateButton("@rocket/launch", "Launches the Rocket command palette", assets.brand.rocket, "Launch")
+	)
+
+	local _settingsButton = (
+		toolbar:CreateButton("@rocket/settings", "Configure Rocket", assets.brand.settings, "Settings")
+	)
 
 	launchAction.Triggered:Connect(toggleIsPaletteVisibile)
 	launchButton.Click:Connect(toggleIsPaletteVisibile)
@@ -126,8 +132,13 @@ local function start()
 	ui.Parent = CoreGui
 
 	Iris.Init(ui :: any)
-	Iris.UpdateGlobalConfig({ RichText = true, FrameBorderSize = 0, IgnoreGuiInset = true })
 	Iris.UpdateGlobalConfig(Iris.TemplateConfig.sizeClear :: any)
+	Iris.UpdateGlobalConfig({
+		RichText = true,
+		FrameBorderSize = 0,
+		IgnoreGuiInset = true,
+		TextFont = Font.fromEnum(Enum.Font.SourceSans),
+	})
 	Iris:Connect(function()
 		if launcher.isVisible() then
 			renderLauncher()

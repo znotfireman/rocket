@@ -1,6 +1,7 @@
 local Workspace = game:GetService("Workspace")
 
 local ButtonGroup = require("./ButtonGroup")
+local Icon = require("@src/lib/Icon")
 local Iris = require("@pkgs/Iris")
 local launcher = require("@src/atoms/launcher")
 
@@ -92,6 +93,8 @@ local function renderLauncher()
 			local button = ButtonGroup()
 			button.Instance.Size = UDim2.new(1, 0, 0, button.Instance.Size.Height.Offset)
 			button.Instance.LayoutOrder = i
+
+			Icon.renderIcon(cmd._metadata.icon or cmd._extension._metadata.icon, UDim2.fromOffset(20, 20))
 
 			Iris.Text({ cmd._metadata.title })
 

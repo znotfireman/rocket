@@ -1,8 +1,8 @@
-local Trove = require("@pkgs/Trove")
-
+local Icon = require("./Icon")
 -- selene doesn't detect typeof() in types
 -- selene: allow(unused_variable)
 local Iris = require("@pkgs/Iris")
+local Trove = require("@pkgs/Trove")
 
 local Command = {}
 Command.__index = Command
@@ -16,7 +16,7 @@ export type CommandMetadata = {
 	id: string,
 	title: string,
 	description: string,
-	icon: string?,
+	icon: Icon.Icon?,
 
 	run: (ctx: CommandContext) -> ()?,
 	runSelected: (ctx: CommandContext, instance: Instance) -> ()?,

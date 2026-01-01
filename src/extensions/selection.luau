@@ -1,20 +1,21 @@
 local Selection = game:GetService("Selection")
 
 local Extension = require("@src/lib/Extension")
+local assets = require("@src/assets")
 
 local plugin = script:FindFirstAncestorWhichIsA("Plugin") :: Plugin
 local ext = Extension.new(plugin, {
 	id = "rocket-selection",
 	title = "Selection",
 	description = "Selection utilities",
-	icon = "",
+	icon = { Image = assets.extensions.selection },
 	authors = { "Team Fireworks" },
 })
 
 ext:newCommand({
 	id = "select-children",
 	title = "Select Children",
-	description = "Wow",
+	description = "Selects children of the current selection",
 
 	run = function()
 		local oldSelection = Selection:Get()
@@ -30,7 +31,7 @@ ext:newCommand({
 ext:newCommand({
 	id = "select-descendants",
 	title = "Select Descendants",
-	description = "Wow",
+	description = "Selects descendants of the current selection",
 
 	run = function()
 		local oldSelection = Selection:Get()
@@ -44,9 +45,9 @@ ext:newCommand({
 })
 
 ext:newCommand({
-	id = "pick-children",
-	title = "Pick Children",
-	description = "Wow",
+	id = "select-just-children",
+	title = "Select Just Children",
+	description = "Selects only the children of the current selection",
 
 	run = function()
 		local newSelection = {}
@@ -59,9 +60,9 @@ ext:newCommand({
 })
 
 ext:newCommand({
-	id = "pick-descendants",
-	title = "Pick Descendants",
-	description = "Wow",
+	id = "select-just-descendants",
+	title = "Select Just Descendants",
+	description = "Selects only the descendants of the current selection",
 
 	run = function()
 		local newSelection = {}
@@ -76,10 +77,31 @@ ext:newCommand({
 ext:newCommand({
 	id = "deselect-all",
 	title = "Deselect All",
-	description = "Wow",
+	description = "Clears your selection",
 
 	run = function()
 		Selection:Set({})
+	end,
+})
+
+ext:newCommand({
+	id = "select-just-first",
+	title = "Select Just First",
+	description = "Reduce to just your first selection",
+
+	run = function()
+		Selection:Set({ Selection:Get()[1] })
+	end,
+})
+
+ext:newCommand({
+	id = "select-just-last",
+	title = "Select Just Last",
+	description = "Reduce to just your last selection",
+
+	run = function()
+		local oldSelection = Selection:Get()
+		Selection:Set({ oldSelection[#oldSelection] })
 	end,
 })
 
