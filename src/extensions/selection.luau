@@ -7,7 +7,7 @@ local plugin = script:FindFirstAncestorWhichIsA("Plugin") :: Plugin
 local ext = Extension.new(plugin, {
 	id = "rocket-selection",
 	title = "Selection",
-	description = "Selection utilities",
+	description = "Selection utilities.",
 	icon = { Image = assets.extensions.selection },
 	authors = { "Team Fireworks" },
 })
@@ -15,7 +15,7 @@ local ext = Extension.new(plugin, {
 ext:newCommand({
 	id = "select-children",
 	title = "Select Children",
-	description = "Selects children of the current selection",
+	description = "Selects children of the current selection.",
 
 	run = function()
 		local oldSelection = Selection:Get()
@@ -31,7 +31,7 @@ ext:newCommand({
 ext:newCommand({
 	id = "select-descendants",
 	title = "Select Descendants",
-	description = "Selects descendants of the current selection",
+	description = "Selects descendants of the current selection.",
 
 	run = function()
 		local oldSelection = Selection:Get()
@@ -47,7 +47,7 @@ ext:newCommand({
 ext:newCommand({
 	id = "select-just-children",
 	title = "Select Just Children",
-	description = "Selects only the children of the current selection",
+	description = "Selects only the children of the current selection.",
 
 	run = function()
 		local newSelection = {}
@@ -62,7 +62,7 @@ ext:newCommand({
 ext:newCommand({
 	id = "select-just-descendants",
 	title = "Select Just Descendants",
-	description = "Selects only the descendants of the current selection",
+	description = "Selects only the descendants of the current selection.",
 
 	run = function()
 		local newSelection = {}
@@ -77,7 +77,7 @@ ext:newCommand({
 ext:newCommand({
 	id = "deselect-all",
 	title = "Deselect All",
-	description = "Clears your selection",
+	description = "Clears your selection.",
 
 	run = function()
 		Selection:Set({})
@@ -87,7 +87,7 @@ ext:newCommand({
 ext:newCommand({
 	id = "select-just-first",
 	title = "Select Just First",
-	description = "Reduce to just your first selection",
+	description = "Reduce to just your first selection.",
 
 	run = function()
 		Selection:Set({ Selection:Get()[1] })
@@ -97,7 +97,7 @@ ext:newCommand({
 ext:newCommand({
 	id = "select-just-last",
 	title = "Select Just Last",
-	description = "Reduce to just your last selection",
+	description = "Reduce to just your last selection.",
 
 	run = function()
 		local oldSelection = Selection:Get()

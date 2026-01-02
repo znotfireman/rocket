@@ -10,12 +10,11 @@ environment = "roblox"
 
 [dependencies]
 Charm = { wally = "littensy/charm", version = "^0.11.0-rc.3" }
-fzy = { wally = "howmanysmall/fast-fzy", version = "^1.0.0" }
 Iris = { wally = "sirmallard/iris", version = "^2.5.0" }
 Promise = { wally = "lukadev-0/typed-promise", version = "^4.0.2" }
+Signal = { wally = "data-oriented-house/lemonsignal", version = "^1.11.0" }
 Trove = { wally = "sleitnick/trove", version = "^1.8.0" }
 typeforge = { wally = "cameronpcampbell/typeforge", version = "^2.1.0" }
-Signal = { wally = "data-oriented-house/lemonsignal", version = "^1.11.0" }
 
 [indices]
 default = "https://github.com/pesde-pkg/index"

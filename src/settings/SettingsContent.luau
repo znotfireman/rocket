@@ -7,7 +7,7 @@ local function SettingsContentNav()
 	Theme.push(Theme.presets.subtext)
 	Iris.Text(SettingsStore.currentPage().title)
 	Iris.PopConfig()
-	Iris.Spacer(Enum.UIFlexMode.Grow)
+	Iris.FlexSpacer(Enum.UIFlexMode.Grow)
 	if Iris.Button("Close").clicked() then
 		SettingsStore.isVisible(false)
 	end

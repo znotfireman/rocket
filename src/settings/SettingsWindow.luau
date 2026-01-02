@@ -1,6 +1,6 @@
 local Iris = require("@pkgs/Iris")
-local SettingsContent = require("./SettingsContent")
-local SettingsSidebar = require("./SettingsSidebar")
+local SettingsContent = require("@settings/SettingsContent")
+local SettingsSidebar = require("@settings/SettingsSidebar")
 local SettingsStore = require("@settings/SettingsStore")
 local useViewportSize = require("@src/utils/useViewportSize")
 
@@ -25,7 +25,7 @@ local function SettingsWindow()
 	})
 
 	local viewportSize = useViewportSize()
-	local windowSize = viewportSize * 0.75
+	local windowSize = viewportSize * 0.8
 	local windowState: any = { position = (viewportSize - windowSize) / 2, size = windowSize }
 	if Iris.Window(WINDOW_ARGS, windowState).closed() then
 		SettingsStore.isVisible(false)

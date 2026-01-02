@@ -2,8 +2,10 @@
 -- It is not intended for manual editing.
 local assets = {
 	brand = {
+		github = "rbxasset://.asphalt-rocket/a0fb973cd9bf0c1123dbe783f7a4093dbcf9b4910d6e385c16a837a04a02306c.png",
 		rocket = "rbxasset://.asphalt-rocket/e95f7dd790dcc7a4da2c4987e9442a7400d984708a6c6202fe8dff4dc640d8b1.png",
 		settings = "rbxasset://.asphalt-rocket/6f623f2ab6e70877ed64e15dead93a83b3882dde401d0dd80f9a7f49a078a100.png",
+		teamfireworks = "rbxasset://.asphalt-rocket/aa826a07f828cebddbf2e53c9c95ec1b6cd62444bcd3543809e8ec120fa2bcca.png",
 	},
 	extensions = {
 		btools = "rbxasset://.asphalt-rocket/071f7e03e29e0eacb04a476a28701935da28d2c8f19e6b2d5476ce30fb089224.png",

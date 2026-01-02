@@ -1,4 +1,5 @@
 local Iris = require("@pkgs/Iris")
+local typeforge = require("@vendor/typeforge")
 
 local function tupleify<Returns>(ctor: (...any) -> Returns): (...any) -> Returns
 	return function(...)
@@ -7,11 +8,18 @@ local function tupleify<Returns>(ctor: (...any) -> Returns): (...any) -> Returns
 end
 
 local ext = {
+	self = Iris,
+
+	PushConfig = Iris.PushConfig :: (deltaStyles: typeforge.Partial<typeof(Iris._config)>) -> (),
+
 	ButtonGroup = require("@iris/widgets/ButtonGroup"),
 	Icon = require("@iris/widgets/Icon"),
+	Header = require("@iris/widgets/Header"),
+	Subtext = require("@iris/widgets/Subtext"),
 	Frame = require("@iris/widgets/Frame"),
 	ScrollingFrame = require("@iris/widgets/ScrollingFrame"),
 	Flex = require("@iris/widgets/Flex"),
+	FlexSpacer = require("@iris/widgets/FlexSpacer"),
 	Spacer = require("@iris/widgets/Spacer"),
 
 	-- patching stateless constructors to use tuple syntax for DX
@@ -29,7 +37,7 @@ local ext = {
 	SmallButton = tupleify(Iris.Button) :: (text: string, size: UDim2?) -> typeof(Iris.Button(...)),
 	Image = tupleify(Iris.Image) :: (
 		image: string,
-		size: UDim2?,
+		size: UDim2,
 		rect: Rect?,
 		scaleType: Enum.ScaleType?,
 		resamplerMode: Enum.ResamplerMode?,
@@ -39,7 +47,7 @@ local ext = {
 	) -> typeof(Iris.Image(...)),
 	ImageButton = tupleify(Iris.Image) :: (
 		image: string,
-		size: UDim2?,
+		size: UDim2,
 		rect: Rect?,
 		scaleType: Enum.ScaleType?,
 		resamplerMode: Enum.ResamplerMode?,
@@ -49,4 +57,5 @@ local ext = {
 	) -> typeof(Iris.ImageButton(...)),
 }
 
-return table.freeze(setmetatable(ext, { __index = Iris }))
+setmetatable(ext, { __index = Iris })
+return ext

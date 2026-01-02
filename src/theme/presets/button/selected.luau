@@ -1,9 +1,9 @@
 local types = require("../../types")
 
 local buttonSelected: types.PartialConfig = {
-	ButtonTransparency = 0.75,
-	ButtonHoveredTransparency = 0.75,
-	ButtonActiveTransparency = 0.5,
+	ButtonTransparency = 0.5,
+	ButtonHoveredTransparency = 0.5,
+	ButtonActiveTransparency = 0.75,
 }
 
 return buttonSelected

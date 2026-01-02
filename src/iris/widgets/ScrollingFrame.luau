@@ -65,7 +65,6 @@ Internal.WidgetConstructor(
 		ChildAdded = function(thisWidget: any, _thisChild: any)
 			return thisWidget.Instance
 		end,
-
 		GenerateState = function(thisWidget: any)
 			if thisWidget.state.ScrollPosition == nil then
 				thisWidget.state.ScrollPosition = Iris.Internal._widgetState(thisWidget, "ScrollPosition", Vector2.zero)

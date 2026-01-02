@@ -14,9 +14,9 @@ local ext = Extension.new(plugin, {
 
 for _, page in SettingsPages do
 	ext:newCommand({
-		id = `page-{page.title}`,
+		id = `page-{page.id}`,
 		title = page.title,
-		description = `Open the {page.title} panel in Rocket Settings`,
+		description = `Open the {page.title} panel in Rocket Settings.`,
 		icon = { Image = page.extensionIcon },
 		run = function()
 			SettingsStore.currentPage(page)

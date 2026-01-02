@@ -29,7 +29,7 @@
 		"luau_packages",
 		"lune_packages",
 		// "roblox_packages",
-		"**/.pesde",
+		// "**/.pesde",
 		"pesde.lock",
 		// "sourcemap.json",
 		"out"

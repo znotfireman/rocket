@@ -9,17 +9,14 @@ local function SettingsSidebar()
 	Theme.pop()
 
 	for _, page in SettingsPages do
-		local button = Iris.ButtonGroup()
-		button.Instance.Size = UDim2.fromScale(1, 0)
+		if Iris.ButtonGroup(UDim2.fromScale(1, 0)).clicked() then
+			SettingsStore.currentPage(page)
+		end
 
 		Iris.Image(page.tabIcon, UDim2.fromOffset(18, 18))
 		Iris.Text(page.title)
 
 		Iris.End()
-
-		if button.clicked() then
-			SettingsStore.currentPage(page)
-		end
 	end
 end
 

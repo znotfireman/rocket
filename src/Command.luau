@@ -1,5 +1,4 @@
 local types = require("@src/types")
--- selene doesn't detect typeof() in types
 -- selene: allow(unused_variable)
 local Iris = require("@iris/Iris")
 local Trove = require("@pkgs/Trove")
@@ -33,6 +32,10 @@ export type Command = setmetatable<{
 
 function Command.new(extension: any, metadata: CommandMetadata): Command
 	return setmetatable({ _extension = extension, _metadata = metadata }, Command)
+end
+
+function Command.is(x: unknown)
+	return typeof(x) == "table" and getmetatable(x) == Command
 end
 
 function Command.formatId(self: Command)

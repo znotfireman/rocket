@@ -74,6 +74,10 @@ function Extension.new(extPlugin: Plugin, extMetadata: ExtensionMetadata): Exten
 	return table.freeze(self)
 end
 
+function Extension.is(x: unknown)
+	return typeof(x) == "table" and getmetatable(x) == Extension
+end
+
 function Extension.isCore(self: Extension)
 	return self._plugin == plugin
 end

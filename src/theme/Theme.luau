@@ -16,6 +16,7 @@ theme.themes = table.freeze({
 theme.presets = table.freeze({
 	base = require("@theme/presets/base"),
 	subtext = require("@theme/presets/subtext"),
+	header = require("@theme/presets/header"),
 	button = table.freeze({
 		highlighted = require("@theme/presets/button/highlighted"),
 		unhighlighted = require("@theme/presets/button/unhighlighted"),
