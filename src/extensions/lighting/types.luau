@@ -1,5 +1,3 @@
-local Extension = require("@src/Extension")
-
 export type RepositionState = {
 	sunDirection: Vector3,
 	cameraPosition: Vector3,
@@ -11,8 +9,9 @@ export type RepositionState = {
 export type Reposition = {
 	id: string,
 	title: string,
+	describedBy: string,
 
-	getDirection: (initial: RepositionState, now: RepositionState) -> Vector3,
+	getDirection: (initial: RepositionState, now: RepositionState) -> Vector3?,
 }
 
 return nil

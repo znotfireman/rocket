@@ -4,16 +4,6 @@
 // see the documentation: https://zed.dev/docs/configuring-zed#settings-files
 {
 	"project_name": "Rocket",
-	"languages": {
-		"Luau": {
-			"formatter": {
-				"external": { "command": "stylua", "arguments": ["-"] }
-			}
-		}
-	},
-	"file_types": {
-		"JSONC": [".luaurc"]
-	},
 	"file_scan_exclusions": [
 		// zed
 		"**/.git",
@@ -28,12 +18,19 @@
 		// rocket
 		"luau_packages",
 		"lune_packages",
-		// "roblox_packages",
-		// "**/.pesde",
 		"pesde.lock",
-		// "sourcemap.json",
 		"out"
 	],
+	"file_types": {
+		"JSONC": [".luaurc"]
+	},
+	"languages": {
+		"Luau": {
+			"formatter": {
+				"external": { "command": "stylua", "arguments": ["-"] }
+			}
+		}
+	},
 	"lsp": {
 		"json-language-server": {
 			"settings": {
@@ -61,7 +58,7 @@
 							"enabled": true,
 							"suggestServices": true,
 							"suggestRequires": true,
-							"requireStyle": "AlwaysAbsolute",
+							"requireStyle": "Auto",
 							"stringRequires": {
 								"enabled": true
 							},
