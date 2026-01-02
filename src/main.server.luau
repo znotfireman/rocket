@@ -34,9 +34,9 @@ end
 local function start()
 	for _, module in script.Parent:WaitForChild("extensions"):GetDescendants() do
 		if module:IsA("ModuleScript") then
-			local requireSuccess, requireError = pcall(require, module)
+			local requireSuccess = pcall(require, module)
 			if not requireSuccess then
-				warn("Failed to require extension module", module:GetFullName(), "because:", requireError)
+				-- warn("Failed to require extension module", module:GetFullName(), "because:", requireError)
 				continue
 			end
 		end
@@ -70,11 +70,12 @@ local function start()
 	end)
 
 	local launcherInputTrove = pluginTrove:Extend()
-	pluginTrove:Add(Charm.subscribe(LauncherStore.isVisible, function(isVisible)
+	pluginTrove:Add(Charm.subscribe(LauncherStore.isVisible, function(isVisible: boolean)
 		LauncherStore.isFocused(false)
 		LauncherStore.search("")
 		LauncherStore.selectedIndex(1)
 		launchButton:SetActive(isVisible)
+
 		launcherInputTrove:Clean()
 
 		if isVisible then
@@ -88,7 +89,10 @@ local function start()
 						math.min(LauncherStore.selectedIndex() + 1, #LauncherStore.searchResults())
 					)
 				elseif keycode == Enum.KeyCode.Return then
-					LauncherStore.runCommand:Fire(Extension.allCommands()[LauncherStore.selectedIndex()])
+					local command = LauncherStore.searchResults()[LauncherStore.selectedIndex()]
+					if command then
+						LauncherStore.runCommand:Fire(command)
+					end
 				elseif keycode == Enum.KeyCode.Escape then
 					local commandContext = LauncherStore.commandContext
 					if commandContext then
@@ -133,6 +137,7 @@ local function start()
 		local ctx: Command.CommandContext = {
 			trove = cmdTrove,
 			iris = Iris,
+			mouse = plugin:GetMouse(),
 		}
 
 		local run = cmd._metadata.run

@@ -9,6 +9,7 @@ Command.__index = Command
 export type CommandContext = {
 	trove: Trove.Trove,
 	iris: typeof(Iris),
+	mouse: Mouse,
 }
 
 export type CommandMetadata = {
