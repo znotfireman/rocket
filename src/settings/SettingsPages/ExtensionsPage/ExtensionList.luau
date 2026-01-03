@@ -2,7 +2,7 @@ local Command = require("@src/Command")
 local CommandListing = require("./CommandListing")
 local Extension = require("@src/Extension")
 local ExtensionListing = require("./ExtensionListing")
-local Iris = require("@iris/Iris")
+local Iris = require("@src/Iris")
 local Theme = require("@theme/Theme")
 local useExtensionPageState = require("./useExtensionPageState")
 

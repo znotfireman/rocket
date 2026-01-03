@@ -1,7 +1,7 @@
 local ChangeHistoryService = game:GetService("ChangeHistoryService")
 
 local Gizmos = require("@src/Gizmos")
-local Iris = require("@iris/Iris")
+local Iris = require("@src/Iris")
 local Trove = require("@pkgs/Trove")
 
 local CommandContext = {}

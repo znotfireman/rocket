@@ -1,5 +1,5 @@
 local Command = require("@src/Command")
-local Iris = require("@iris/Iris")
+local Iris = require("@src/Iris")
 local Theme = require("@theme/Theme")
 local useExtensionPageState = require("./useExtensionPageState")
 

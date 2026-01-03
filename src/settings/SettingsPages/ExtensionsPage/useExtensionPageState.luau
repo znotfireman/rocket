@@ -1,6 +1,6 @@
 local Command = require("@src/Command")
 local Extension = require("@src/Extension")
-local Iris = require("@iris/Iris")
+local Iris = require("@src/Iris")
 
 local function useExtensionPageState()
 	return {

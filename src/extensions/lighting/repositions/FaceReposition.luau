@@ -1,5 +1,5 @@
 local DirectionGizmo = require("./gizmos/DirectionGizmo")
-local Iris = require("@iris/Iris")
+local Iris = require("@src/Iris")
 local reflect = require("../reflect")
 local types = require("../types")
 

@@ -12,15 +12,15 @@ local ext = {
 
 	PushConfig = Iris.PushConfig :: (deltaStyles: typeforge.Partial<typeof(Iris._config)>) -> (),
 
-	ButtonGroup = require("@iris/widgets/ButtonGroup"),
-	Icon = require("@iris/widgets/Icon"),
-	Header = require("@iris/widgets/Header"),
-	Subtext = require("@iris/widgets/Subtext"),
-	Frame = require("@iris/widgets/Frame"),
-	ScrollingFrame = require("@iris/widgets/ScrollingFrame"),
-	Flex = require("@iris/widgets/Flex"),
-	FlexSpacer = require("@iris/widgets/FlexSpacer"),
-	Spacer = require("@iris/widgets/Spacer"),
+	ButtonGroup = require("@src/widgets/ButtonGroup"),
+	Icon = require("@src/widgets/Icon"),
+	Header = require("@src/widgets/Header"),
+	Subtext = require("@src/widgets/Subtext"),
+	Frame = require("@src/widgets/Frame"),
+	ScrollingFrame = require("@src/widgets/ScrollingFrame"),
+	Flex = require("@src/widgets/Flex"),
+	FlexSpacer = require("@src/widgets/FlexSpacer"),
+	Spacer = require("@src/widgets/Spacer"),
 
 	-- patching stateless constructors to use tuple syntax for DX
 	Tooltip = tupleify(Iris.Tooltip) :: (text: string) -> typeof(Iris.Tooltip(...)),

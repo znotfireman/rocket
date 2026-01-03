@@ -1,5 +1,5 @@
 local Extension = require("@src/Extension")
-local Iris = require("@iris/Iris")
+local Iris = require("@src/Iris")
 local assets = require("@src/assets")
 local useExtensionPageState = require("./useExtensionPageState")
 

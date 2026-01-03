@@ -1,4 +1,4 @@
-local Iris = require("@iris/Iris")
+local Iris = require("@src/Iris")
 local SettingsPages = require("@settings/SettingsPages")
 local SettingsStore = require("@settings/SettingsStore")
 local Theme = require("@theme/Theme")
