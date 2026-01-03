@@ -1,0 +1,28 @@
+name: nightly
+
+on:
+    push:
+        branches: [main]
+        paths: ["**.luau"]
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Setup rokit
+              uses: CompeyDev/setup-rokit@v0.1.0
+            - name: Setup pesde
+              uses: axiom-co/setup-pesde@v0.4.1
+            - name: Install dependencies
+              run: pesde install
+            - name: Build Rocket
+              run: lune run build model
+            - uses: actions/upload-artifact@v4
+              with:
+                  path: Rocket.rbxm

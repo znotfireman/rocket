@@ -4,23 +4,6 @@
 // see the documentation: https://zed.dev/docs/configuring-zed#settings-files
 {
 	"project_name": "Rocket",
-	"file_scan_exclusions": [
-		// zed
-		"**/.git",
-		"**/.svn",
-		"**/.hg",
-		"**/.jj",
-		"**/CVS",
-		"**/.DS_Store",
-		"**/Thumbs.db",
-		"**/.classpath",
-		"**/.settings",
-		// rocket
-		"luau_packages",
-		"lune_packages",
-		"pesde.lock",
-		"out"
-	],
 	"file_types": {
 		"JSONC": [".luaurc"]
 	},
