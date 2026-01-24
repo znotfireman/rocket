@@ -40,10 +40,14 @@ local function tableToToml(tbl: {}, parent: string)
 	for k, v in tbl do
 		if typeof(v) == "table" and next(v) ~= nil then
 			if #v > 0 then
-				for _, entry in v do
-					result ..= "\n[[" .. (parent and parent .. "." or "") .. k .. "]]\n"
-					result ..= tableToToml(entry, nil)
+				result ..= k .. "=" .. "["
+				for i, entry in v do
+					result ..= serializeValue(entry)
+					if i < #v then
+						result ..= ", "
+					end
 				end
+				result ..= "]\n"
 			else
 				subTables[k] = v
 			end

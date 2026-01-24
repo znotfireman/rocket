@@ -5,7 +5,7 @@
 {
 	"project_name": "Rocket",
 	"file_types": {
-		"JSONC": [".luaurc"]
+		"JSONC": [".luaurc"],
 	},
 	"file_scan_exclusions": [
 		"**/.git",
@@ -18,17 +18,18 @@
 		"**/.classpath",
 		"**/.settings",
 		".git",
-		"out",
+		"luau_packages",
+		"lune_packages",
 		"roblox.d.luau",
 		"Rocket.rbxm",
-		"pesde.lock"
+		"pesde.lock",
 	],
 	"languages": {
 		"Luau": {
 			"formatter": {
-				"external": { "command": "stylua", "arguments": ["-"] }
-			}
-		}
+				"external": { "command": "stylua", "arguments": ["-"] },
+			},
+		},
 	},
 	"lsp": {
 		"json-language-server": {
@@ -37,15 +38,15 @@
 					"schemas": [
 						{
 							"fileMatch": [".luaurc"],
-							"url": "https://raw.githubusercontent.com/JohnnyMorganz/luau-lsp/refs/heads/main/editors/code/schemas/luaurc.json"
+							"url": "https://raw.githubusercontent.com/JohnnyMorganz/luau-lsp/refs/heads/main/editors/code/schemas/luaurc.json",
 						},
 						{
 							"fileMatch": ["*.project.json"],
-							"url": "https://raw.githubusercontent.com/rojo-rbx/vscode-rojo/refs/heads/master/schemas/project.template.schema.json"
-						}
-					]
-				}
-			}
+							"url": "https://raw.githubusercontent.com/rojo-rbx/vscode-rojo/refs/heads/master/schemas/project.template.schema.json",
+						},
+					],
+				},
+			},
 		},
 		"luau-lsp": {
 			"settings": {
@@ -59,21 +60,21 @@
 							"suggestRequires": true,
 							"requireStyle": "Auto",
 							"stringRequires": {
-								"enabled": true
+								"enabled": true,
 							},
 							"separateGroupsWithLine": true,
-							"ignoreGlobs": ["**/.pesde/**", "**/out/**"]
-						}
-					}
+							"ignoreGlobs": ["**/.pesde/**", "**/out/**"],
+						},
+					},
 				},
 				"roblox": {
 					"enabled": true,
-					"security_level": "plugin"
+					"security_level": "plugin",
 				},
 				"fflags": {
-					"enable_new_solver": true
-				}
-			}
-		}
-	}
+					"enable_new_solver": true,
+				},
+			},
+		},
+	},
 }

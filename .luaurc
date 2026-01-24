@@ -4,7 +4,8 @@
         "src": "src",
         "include": "include",
         "pkgs": "roblox_packages",
-        "modules": "modules"
+        "modules": "modules",
+        "monorepo": ".lute/lib/monorepo"
     },
     "lint": {
         "*": true

@@ -15,3 +15,6 @@ include/assets.luau
 Rocket.rbxm
 roblox.d.luau
 src/_OLD_
+
+.lute/typedefs/*
+!.lute/typedefs/.luaurc

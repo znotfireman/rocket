@@ -1,4 +1,4 @@
-local types = require("./api-types")
+local types = require("./types")
 
 export type FromExtension = types.FromExtension
 
@@ -38,5 +38,18 @@ export type GetIrisWidget<Name> = types.GetIrisWidget<Name>
 export type MergeTable<Base, Overrides> = types.MergeTable<Base, Overrides>
 export type IntersectionToTable<Intersection> = types.IntersectionToTable<Intersection>
 
-local Rocket: types.Rocket = (require)(game:WaitForChild("Rocket"))
+--[=[
+	@class Rocket
+	@since 0.0.0
+
+	The Rocket extension library.
+
+	See the `types` package for more information.
+
+	```lua
+	local Rocket = require(plugin.Packages.Rocket)
+	```
+]=]
+local Rocket: types.Rocket = (require)(game:WaitForChild("Rocket", math.huge))
+
 return Rocket

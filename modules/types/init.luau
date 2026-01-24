@@ -115,11 +115,16 @@ export type IntersectionToTable<Intersection> = utils.IntersectionToTable<Inters
 		print(Rocket.version)
 		```
 
-	2.  Install Rocket's `api` package with your preferred package manager,
+	2.  Install Rocket's `pub` package with your preferred package manager,
 		which wraps the require call above with	the library's types.
 ]=]
 export type Rocket = {
 	version: string,
+	sessionId: string,
+
+	isCommand: (x: unknown) -> boolean,
+	isCommandRuntime: (x: unknown) -> boolean,
+	isExtension: (x: unknown) -> boolean,
 
 	useIris: (self: Rocket) -> iris.Iris?,
 	useCurrentCommand: (self: Rocket) -> Command?,

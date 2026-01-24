@@ -1,15 +1,13 @@
 --!nonstrict
 --!optimize 2
 
--- Modified for new solver usage in Rocket
--- TODO: Boba for new solver?
 --[[
 
     ▄ █ ▀█▀ █ ▄  Welcome To Hell @ wthrblx.com
      █▀█ █ █▀█   (c) Team Fireworks 2024-2026.
 
     This software is provided 'as-is', without any express or implied
-    warranty. In no event will the contributors be held liable for any damages
+    warranty. In no event will the authors be held liable for any damages
     arising from the use of this software.
 
     Permission is granted to anyone to use this software for any purpose,
@@ -109,6 +107,7 @@ Boba.quoteGot = quoteGot
 export type BobaInner<T> = {
 	expectedType: string,
 	match: (self: Boba<T>, x: unknown) -> Result,
+	T: T,
 	inner: T,
 }
 
@@ -119,6 +118,7 @@ function Boba.new<T>(expectedType: string, match: (self: Boba<T>, x: any) -> Res
 		expectedType = expectedType,
 		match = match,
 	}, Boba)
+	self.T = self :: any
 	self.inner = self :: any
 	return self
 end
@@ -163,7 +163,7 @@ function Boba.Untype<T>(self: Boba<T>): Boba<any>
 end
 
 function Boba.And<L, R>(left: Boba<L>, right: Boba<R>): Boba<L & R>
-	return Boba.new(`({left.expectedType}) & ({right.expectedType})`, function(self: Boba<any>, x: any)
+	return Boba.new(`({left.expectedType}) & ({right.expectedType})`, function(self, x)
 		local leftResult = left:match(x)
 		if leftResult.ok then
 			local rightResult = right:match(x)
@@ -176,7 +176,7 @@ function Boba.And<L, R>(left: Boba<L>, right: Boba<R>): Boba<L & R>
 end
 
 function Boba.Or<L, R>(left: Boba<L>, right: Boba<R>): Boba<L | R>
-	return Boba.new(`{left.expectedType} | {right.expectedType}`, function(self: Boba<any>, x: any)
+	return Boba.new(`{left.expectedType} | {right.expectedType}`, function(self, x)
 		local leftResult = left:match(x)
 		local rightResult = right:match(x)
 		if leftResult.ok or rightResult.ok then
@@ -189,7 +189,7 @@ function Boba.Or<L, R>(left: Boba<L>, right: Boba<R>): Boba<L | R>
 end
 
 function Boba.Optional<T>(inner: Boba<T>): Boba<T?>
-	return Boba.new(`({inner.expectedType})?`, function(_: Boba<any>, x: any)
+	return Boba.new(`({inner.expectedType})?`, function(_, x)
 		if x == nil then
 			return Result.ok
 		end
@@ -198,7 +198,7 @@ function Boba.Optional<T>(inner: Boba<T>): Boba<T?>
 end
 
 function Boba.Predicate<T>(inner: Boba<T>, predicate: (value: T) -> (boolean, string?)): Boba<T>
-	return Boba.new(`Predicate<{inner.expectedType}>`, function(self: Boba<any>, x: any)
+	return Boba.new(`Predicate<{inner.expectedType}>`, function(self, x)
 		local innerResult = inner:match(x)
 
 		if innerResult.ok then
@@ -215,19 +215,19 @@ function Boba.Predicate<T>(inner: Boba<T>, predicate: (value: T) -> (boolean, st
 end
 
 function Boba.Literal<T>(literal: T, nickname: string?): Boba<T>
-	return Boba.new(nickname or tostring(literal), function(self: Boba<any>, x: any)
+	return Boba.new(nickname or tostring(literal), function(self, x)
 		return if rawequal(x, literal) then Result.ok else self:fail(`only {literal} is accepted, but {quoteGot(x)}`)
 	end)
 end
 
 function Boba.Typeof<T>(expected: string)
-	return Boba.new(expected, function(self: Boba<any>, x: any)
+	return Boba.new(expected, function(self, x)
 		return if typeof(x) == expected then Result.ok else self:fail(quoteGot(x))
 	end)
 end
 
 function Boba.Array<V>(values: Boba<V>): Boba<{ V }>
-	return Boba.new(`\{ {values.expectedType} \}`, function(self: Boba<any>, x: any)
+	return Boba.new(`\{ {values.expectedType} \}`, function(self, x)
 		if typeof(x) ~= "table" then
 			return self:fail(`expected a table, but {quoteGot(x)}`)
 		end
@@ -253,7 +253,7 @@ function Boba.Array<V>(values: Boba<V>): Boba<{ V }>
 end
 
 function Boba.Map<K, V>(keys: Boba<K>, values: Boba<V>): Boba<{ [K]: V }>
-	return Boba.new(`\{ [{keys.expectedType}]: {values.expectedType} \}`, function(self: Boba<any>, x: any)
+	return Boba.new(`\{ [{keys.expectedType}]: {values.expectedType} \}`, function(self, x)
 		if typeof(x) ~= "table" then
 			return self:fail(`expected a table, but {quoteGot(x)}`)
 		end
@@ -275,7 +275,7 @@ function Boba.Map<K, V>(keys: Boba<K>, values: Boba<V>): Boba<{ [K]: V }>
 end
 
 function Boba.Set<K>(keys: Boba<K>): Boba<{ [K]: true }>
-	return Boba.new(`\{ [{keys.expectedType}]: true \}`, function(self: Boba<any>, x: any)
+	return Boba.new(`\{ [{keys.expectedType}]: true \}`, function(self, x)
 		if typeof(x) ~= "table" then
 			return self:fail(`expected a table, but {quoteGot(x)}`)
 		end
@@ -295,14 +295,14 @@ function Boba.Set<K>(keys: Boba<K>): Boba<{ [K]: true }>
 	end)
 end
 
-function Boba.Struct<T>(struct: T): Boba<T>
+function Boba.Struct<T>(struct: T & { [string]: Boba<any> }): Boba<T>
 	local expectedPairs = { "[any]: any" }
 	for key, value in struct :: { [string]: Boba<any> } do
 		-- TODO: key could be better formatted here
 		table.insert(expectedPairs, `{key}: {value.expectedType}`)
 	end
 
-	return Boba.new(`\{ {table.concat(expectedPairs, ", ")} \}`, function(self: Boba<any>, x: any)
+	return Boba.new(`\{ {table.concat(expectedPairs, ", ")} \}`, function(self, x)
 		if typeof(x) ~= "table" then
 			return self:fail(`expected a table, but {quoteGot(x)}`)
 		end
@@ -326,7 +326,7 @@ function Boba.ExhaustiveStruct<T>(struct: T): Boba<T>
 		table.insert(expectedPairs, `{key}: {value.expectedType}`)
 	end
 
-	return Boba.new(`\{ {table.concat(expectedPairs, ", ")} \}`, function(self: Boba<any>, x: any)
+	return Boba.new(`\{ {table.concat(expectedPairs, ", ")} \}`, function(self, x)
 		if typeof(x) ~= "table" then
 			return self:fail(`expected a table, but {quoteGot(x)}`)
 		end
@@ -349,6 +349,67 @@ function Boba.ExhaustiveStruct<T>(struct: T): Boba<T>
 	end)
 end
 
+local function Function(...: Boba<any>)
+	local arguments = table.pack(...)
+	return function(...: Boba<any>)
+		local returns = table.pack(...)
+
+		local argumentsFormatted, returnsFormatted = {}, {}
+		for index = 1, arguments.n do
+			argumentsFormatted[index] = arguments[index].expectedType
+		end
+
+		for index = 1, returns.n do
+			returnsFormatted[index] = returns[index].expectedType
+		end
+
+		local expectedReturns = table.concat(argumentsFormatted, ", ")
+		if returns.n ~= 1 then
+			expectedReturns = "(" .. expectedReturns .. ")"
+		end
+
+		return Boba.new(`({table.concat(argumentsFormatted, ", ")}) -> {expectedReturns}`, function(self, x)
+			if typeof(x) == "function" then
+				return Result.ok
+			end
+
+			return Result.fail(self.expectedType, quoteGot(x))
+		end)
+	end
+end
+
+-- What the fuck Luau
+
+-- stylua: ignore
+type FunctionReturnsConstructor<Args...> =
+	& (() -> Boba<(Args...) -> ()>)
+	& (<T1>(Boba<T1>) -> Boba<(Args...) -> T1>)
+	& (<T1, T2>(Boba<T1>, Boba<T2>) -> Boba<(Args...) -> (T1, T2)>)
+	& (<T1, T2, T3>(Boba<T1>, Boba<T2>, Boba<T3>) -> Boba<(Args...) -> (T1, T2, T3)>)
+	& (<T1, T2, T3, T4>(Boba<T1>, Boba<T2>, Boba<T3>, Boba<T4>) -> Boba<(Args...) -> (T1, T2, T3, T4)>)
+	& (<T1, T2, T3, T4, T5>(Boba<T1>, Boba<T2>, Boba<T3>, Boba<T4>, Boba<T5>) -> Boba<(Args...) -> (T1, T2, T3, T4, T5)>)
+	& (<T1, T2, T3, T4, T5, T6>(Boba<T1>, Boba<T2>, Boba<T3>, Boba<T4>, Boba<T5>, Boba<T6>) -> Boba<(Args...) -> (T1, T2, T3, T4, T5, T6)>)
+	& (<T1, T2, T3, T4, T5, T6, T7>(Boba<T1>, Boba<T2>, Boba<T3>, Boba<T4>, Boba<T5>, Boba<T6>, Boba<T7>) -> Boba<(Args...) -> (T1, T2, T3, T4, T5, T6, T7)>)
+	& (<T1, T2, T3, T4, T5, T6, T7, T8>(Boba<T1>, Boba<T2>, Boba<T3>, Boba<T4>, Boba<T5>, Boba<T6>, Boba<T7>, Boba<T8>) -> Boba<(Args...) -> (T1, T2, T3, T4, T5, T6, T7, T8)>)
+	& (<T1, T2, T3, T4, T5, T6, T7, T8, T9>(Boba<T1>, Boba<T2>, Boba<T3>, Boba<T4>, Boba<T5>, Boba<T6>, Boba<T7>, Boba<T8>, Boba<T9>) -> Boba<(Args...) -> (T1, T2, T3, T4, T5, T6, T7, T8, T9)>)
+	& ((...Boba<any>) -> Boba<(Args...) -> ...any>)
+
+-- stylua: ignore
+type FunctionConstructor =
+	& (() -> FunctionReturnsConstructor<>)
+	& (<T1>(Boba<T1>) -> FunctionReturnsConstructor<T1>)
+	& (<T1, T2>(Boba<T1>, Boba<T2>) -> FunctionReturnsConstructor<T1, T2>)
+	& (<T1, T2, T3>(Boba<T1>, Boba<T2>, Boba<T3>) -> FunctionReturnsConstructor<T1, T2, T3>)
+	& (<T1, T2, T3, T4>(Boba<T1>, Boba<T2>, Boba<T3>, Boba<T4>) -> FunctionReturnsConstructor<T1, T2, T3, T4>)
+	& (<T1, T2, T3, T4, T5>(Boba<T1>, Boba<T2>, Boba<T3>, Boba<T4>, Boba<T5>) -> FunctionReturnsConstructor<T1, T2, T3, T4, T5>)
+	& (<T1, T2, T3, T4, T5, T6>(Boba<T1>, Boba<T2>, Boba<T3>, Boba<T4>, Boba<T5>, Boba<T6>) -> FunctionReturnsConstructor<T1, T2, T3, T4, T5, T6>)
+	& (<T1, T2, T3, T4, T5, T6, T7>(Boba<T1>, Boba<T2>, Boba<T3>, Boba<T4>, Boba<T5>, Boba<T6>, Boba<T7>) -> FunctionReturnsConstructor<T1, T2, T3, T4, T5, T6, T7>)
+	& (<T1, T2, T3, T4, T5, T6, T7, T8>(Boba<T1>, Boba<T2>, Boba<T3>, Boba<T4>, Boba<T5>, Boba<T6>, Boba<T7>, Boba<T8>) -> FunctionReturnsConstructor<T1, T2, T3, T4, T5, T6, T7, T8>)
+	& (<T1, T2, T3, T4, T5, T6, T7, T8, T9>(Boba<T1>, Boba<T2>, Boba<T3>, Boba<T4>, Boba<T5>, Boba<T6>, Boba<T7>, Boba<T8>, Boba<T9>) -> FunctionReturnsConstructor<T1, T2, T3, T4, T5, T6, T7, T8, T9>)
+	& ((...Boba<any>) -> FunctionReturnsConstructor<...any>)
+
+Boba.Function = Function :: FunctionConstructor
+
 Boba.Any = Boba.new("any", function()
 	return Result.ok
 end) :: Boba<any>
@@ -363,7 +424,7 @@ end) :: Boba<never>
 
 Boba.Boolean = Boba.Typeof("boolean") :: Boba<boolean>
 Boba.Buffer = Boba.Typeof("buffer") :: Boba<buffer>
-Boba.Function = Boba.Typeof("function") :: Boba<(...any) -> ...any>
+Boba.AnyFunction = Boba.Typeof("function") :: Boba<(...any) -> ...any>
 Boba.Number = Boba.Typeof("number") :: Boba<number>
 Boba.String = Boba.Typeof("string") :: Boba<string>
 Boba.Table = Boba.Typeof("table") :: Boba<{ [any]: any }>
