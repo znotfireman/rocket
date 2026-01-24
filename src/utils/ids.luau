@@ -34,6 +34,7 @@ end
 local function getUserThumbnail(userId: number, type: Enum.ThumbnailType, size: Enum.ThumbnailSize): string
 	return `rbxthumb://type={THUMBNAIL_NAMES[type]}&id={userId}&w={THUMBNAIL_NAMES[size]}&h={THUMBNAIL_NAMES[size]}`
 end
+
 return table.freeze({
 	rocket = rocket,
 	getUsername = getUsername,

@@ -3,7 +3,9 @@
     "aliases": {
         "src": "src",
         "include": "include",
-        "pkgs": "roblox_packages"
+        "pkgs": "roblox_packages",
+        "modules": "modules",
+        "monorepo": ".lute/lib/monorepo"
     },
     "lint": {
         "*": true

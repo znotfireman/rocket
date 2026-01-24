@@ -1,6 +1,5 @@
 local cli = require("@batteries/cli")
 local process = require("@lute/process")
-local richterm = require("@batteries/richterm")
 local stringext = require("@std/stringext")
 
 local Summon = {}
@@ -62,7 +61,7 @@ end
 
 function Summon.run(self: Summon)
 	local command = self:getCommand()
-	print(richterm.black(`> {command}`))
+	print(`> {command}`)
 	return process.system(command, {
 		cwd = self.cwd,
 		env = self.env,
@@ -102,6 +101,10 @@ function Summon.codeFromMany(...: Summon)
 	end
 
 	return code
+end
+
+function Summon.exitFromMany(...: Summon)
+	return process.exit((Summon.codeFromMany :: any)(...))
 end
 
 return table.freeze(Summon)

@@ -1,5 +1,7 @@
 ---
 base: roblox
 globals:
+    types:
+        any: true
     require:
         any: true
